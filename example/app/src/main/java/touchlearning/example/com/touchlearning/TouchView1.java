@@ -19,6 +19,7 @@ import android.view.ViewParent;
 public class TouchView1 extends View {
     private boolean canTouch;
     private float lastX,lastY;
+    private int mWidth,mHeight;
     private int parentWidth,parentHeight;
     public TouchView1(Context context) {
         super(context);
@@ -45,6 +46,13 @@ public class TouchView1 extends View {
         canTouch=typedArray.getBoolean(R.styleable.TouchView1_canTocuh,false);
 
         typedArray.recycle();
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        mHeight=MeasureSpec.getSize(heightMeasureSpec);
+        mWidth=MeasureSpec.getSize(widthMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
@@ -77,21 +85,21 @@ public class TouchView1 extends View {
                 lastY = rawY;
                 if(setLeft<0){
                     setLeft=0;
-                    setRight=getWidth();
+                    setRight=mWidth;
                 }
                 if(parentWidth!=0 && setRight>parentWidth){
                    setRight=parentWidth;
-                   setLeft=parentWidth-getWidth();
+                   setLeft=parentWidth-mWidth;
                 }
                 if(setTop<0){
                    setTop=0;
-                    setBottom=getHeight();
+                    setBottom=mHeight;
                 }
                 if(parentHeight!=0 && setBottom>parentHeight){
                    setBottom=parentHeight;
-                    setTop=parentHeight-getHeight();
+                    setTop=parentHeight-mHeight;
                 }
-                Log.d("测试",setLeft+"/"+setTop+"/"+setRight+"/"+setBottom+"/"+parentWidth+"/"+parentHeight);
+                Log.d("测试",setLeft+"/"+setTop+"/"+setRight+"/"+setBottom+"/"+parentWidth+"/"+parentHeight+"/"+mWidth+"/"+mHeight);
 
                 layout(setLeft
                         , setTop
